@@ -15,7 +15,7 @@ app.use(multer({
     fileFilter
 }).single('image'));
 
-app.use(routes);
+app.use('/api', routes);
 app.use(express.static(path.join(__dirname, 'public')));
 
 export default app;
