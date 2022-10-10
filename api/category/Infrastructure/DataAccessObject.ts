@@ -1,8 +1,9 @@
 import { Category } from '../../../models/Category';
-import { CategoryCreator, CategoryNameFinder, CategoryUpdater, ListOfCategories } from '../Repository';
+import { CategoryCreator, CategoryFinder, CategoryNameFinder, CategoryUpdater, ListOfCategories } from '../Repository';
+import CategoryEntity from '../Category';
 
 export class Creator implements CategoryCreator {
-    public saveCategory = async (category: { uuid: string; name: string; }): Promise<void> => {
+    public saveCategory = async (category: CategoryEntity): Promise<void> => {
         try {
             await Category.insert(category);
         } catch (error) {
@@ -15,10 +16,9 @@ export class Creator implements CategoryCreator {
 }
 
 export class Updater implements CategoryUpdater {
-    public updateCategory = async (category: { uuid: string; name: string; }): Promise<void> => {
-        const {uuid, name} = category;
+    public updateCategory = async({ uuid, category }: { uuid: string; category: CategoryEntity; }): Promise<void> => {
         try {
-            await Category.update({ uuid }, { name });
+            await Category.update({ uuid }, { name: category.name });
         } catch (error) {
             throw {
                 statusCode: 500,
@@ -26,6 +26,7 @@ export class Updater implements CategoryUpdater {
             };
         }
     };
+
 }
 
 export class CategoryName implements CategoryNameFinder {
@@ -50,4 +51,15 @@ export class AllCategories implements ListOfCategories {
             };
         }
     };
+}
+
+export class FindCategory implements CategoryFinder {
+    public getCategory = async(uuid: string): Promise<boolean> => {
+        const category = await Category.findOneBy({ uuid });
+        if (!category) 
+            return false;
+        
+        return true;
+    };
+
 }

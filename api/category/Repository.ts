@@ -1,11 +1,12 @@
 import { Category } from '../../models/Category';
+import CategoryEntity from './Category';
 
 export interface CategoryUpdater {
-    updateCategory(category: { uuid: string, name: string }): Promise<void>
+    updateCategory({uuid, category}: {uuid: string, category: CategoryEntity }): Promise<void>
 }
 
 export interface CategoryFinder {
-    getCategory(uuid: string): Promise<Category[]>
+    getCategory(uuid: string): Promise<boolean>
 }
 
 export interface CategoryNameFinder {
@@ -13,7 +14,7 @@ export interface CategoryNameFinder {
 }
 
 export interface CategoryCreator {
-    saveCategory(category: { uuid: string, name: string }): Promise<void>
+    saveCategory(category: CategoryEntity): Promise<void>
 }
 
 export interface ListOfCategories {

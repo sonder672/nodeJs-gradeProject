@@ -8,8 +8,6 @@ export default class Create {
     ){}
 
     public saveCategory = async(name: string): Promise<void> => {
-        const categoryEntity = new Category(name);
-
         try {
             const nameCategories = await this.finder.getNameOfCategory(name);
 
@@ -19,9 +17,9 @@ export default class Create {
                     message: 'The name already exists, choose another for your category'
                 };
 
-            await this.creator.saveCategory(
-                {uuid: categoryEntity.uuid, name: categoryEntity.name}
-            );
+            const categoryEntity = new Category(name);
+
+            await this.creator.saveCategory(categoryEntity);
         } catch (error) {
             throw {
                 statusCode: error.statusCode,
