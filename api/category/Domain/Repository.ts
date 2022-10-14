@@ -1,16 +1,15 @@
-import { Category } from '../../models/Category';
 import CategoryEntity from './Category';
 
 export interface CategoryUpdater {
     updateCategory({uuid, category}: {uuid: string, category: CategoryEntity }): Promise<void>
 }
 
-export interface CategoryFinder {
-    getCategory(uuid: string): Promise<boolean>
+export interface CategoryUuidFinder {
+    getCategory(uuid: string)
 }
 
 export interface CategoryNameFinder {
-    getNameOfCategory(name: string): Promise<boolean>
+    getNameOfCategory(name: string)
 }
 
 export interface CategoryCreator {
@@ -18,5 +17,5 @@ export interface CategoryCreator {
 }
 
 export interface ListOfCategories {
-    getAllCategories(): Promise<Category[]>
+    getAllCategories()
 }

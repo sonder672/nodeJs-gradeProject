@@ -1,21 +1,17 @@
-import Category from '../Category';
-import { CategoryCreator, CategoryNameFinder } from '../Repository';
+import Category from '../Domain/Category';
+import { CategoryCreator, CategoryNameFinder } from '../Domain/Repository';
+import FindCategoryName from './FindCategoryName';
 
 export default class Create {
     constructor(
         private readonly creator: CategoryCreator, 
-        private readonly finder: CategoryNameFinder
+        private readonly nameFinder: CategoryNameFinder
     ){}
 
     public saveCategory = async(name: string): Promise<void> => {
         try {
-            const nameCategories = await this.finder.getNameOfCategory(name);
-
-            if (nameCategories)
-                throw {
-                    statusCode: 400,
-                    message: 'The name already exists, choose another for your category'
-                };
+            const categoryName = new FindCategoryName(this.nameFinder);
+            await categoryName.existingCategoryName(name);
 
             const categoryEntity = new Category(name);
 

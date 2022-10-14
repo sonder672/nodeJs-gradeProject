@@ -1,30 +1,22 @@
-import Category from '../Category';
-import { CategoryUpdater, CategoryNameFinder, CategoryFinder } from '../Repository';
+import Category from '../Domain/Category';
+import { CategoryUpdater, CategoryNameFinder, CategoryUuidFinder } from '../Domain/Repository';
+import FindCategoryName from './FindCategoryName';
+import FindCategoryUuid from './FindCategoryUuid';
 
 export default class Update {
     constructor(
         private readonly updater: CategoryUpdater,
         private readonly nameFinder: CategoryNameFinder,
-        private readonly uuidFinder: CategoryFinder
+        private readonly uuidFinder: CategoryUuidFinder
     ) {}
 
     public updateCategory = async({uuid, name}: {uuid: string, name: string}): Promise<void> => {
         try {
-            const categoryExists = await this.uuidFinder.getCategory(uuid);
+            const categoryUuid = new FindCategoryUuid(this.uuidFinder);
+            await categoryUuid.existingCategoryUuid(uuid);
 
-            if (!categoryExists)
-                throw {
-                    statusCode: 404,
-                    message: 'the identifier does not correspond to any category'
-                };
-
-            const existingCategoryName = await this.nameFinder.getNameOfCategory(name);
-
-            if (existingCategoryName)
-                throw {
-                    statusCode: 400,
-                    message: 'The name already exists, choose another for your category'
-                };
+            const categoryName = new FindCategoryName(this.nameFinder);
+            await categoryName.existingCategoryName(name);
 
             const categoryEntity = new Category(name);
             delete categoryEntity[uuid];
