@@ -1,5 +1,5 @@
-import Category from '../Domain/Category';
-import { CategoryUpdater, CategoryNameFinder, CategoryUuidFinder } from '../Domain/Repository';
+import Category from '../domain/Category';
+import { CategoryUpdater, CategoryNameFinder, CategoryUuidFinder } from '../domain/Repository';
 import FindCategoryName from './FindCategoryName';
 import FindCategoryUuid from './FindCategoryUuid';
 

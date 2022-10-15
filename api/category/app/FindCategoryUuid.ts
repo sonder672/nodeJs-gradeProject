@@ -1,4 +1,4 @@
-import { CategoryUuidFinder } from '../Domain/Repository';
+import { CategoryUuidFinder } from '../domain/Repository';
 
 export default class FindCategoryUuid {
     constructor(private readonly uuidFinder: CategoryUuidFinder){}

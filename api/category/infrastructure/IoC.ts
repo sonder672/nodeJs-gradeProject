@@ -1,6 +1,6 @@
-import Create from '../App/Create';
-import Update from '../App/Update';
-import Categories from '../App/Categories';
+import Create from '../app/Create';
+import Update from '../app/Update';
+import Categories from '../app/Categories';
 import { Creator, Updater, AllCategories, CategoryName, FindCategory } from './DataAccessObject';
 import Controller from './Controller';
 

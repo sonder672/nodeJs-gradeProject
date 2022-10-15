@@ -1,4 +1,4 @@
-import { ListOfCategories } from '../Domain/Repository';
+import { ListOfCategories } from '../domain/Repository';
 export default class Categories {
     constructor(private readonly lister: ListOfCategories) {}
 

@@ -1,4 +1,4 @@
-import { CategoryNameFinder } from '../Domain/Repository';
+import { CategoryNameFinder } from '../domain/Repository';
 
 export default class FindCategoryName {
     constructor(private readonly finder: CategoryNameFinder){}

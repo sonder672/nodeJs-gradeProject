@@ -1,5 +1,5 @@
-import Category from '../Domain/Category';
-import { CategoryCreator, CategoryNameFinder } from '../Domain/Repository';
+import Category from '../domain/Category';
+import { CategoryCreator, CategoryNameFinder } from '../domain/Repository';
 import FindCategoryName from './FindCategoryName';
 
 export default class Create {

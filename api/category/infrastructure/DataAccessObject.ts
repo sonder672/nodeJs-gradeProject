@@ -1,6 +1,6 @@
 import { Category } from '../../../models/Category';
-import { CategoryCreator, CategoryUuidFinder, CategoryNameFinder, CategoryUpdater, ListOfCategories } from '../Domain/Repository';
-import CategoryEntity from '../Domain/Category';
+import { CategoryCreator, CategoryUuidFinder, CategoryNameFinder, CategoryUpdater, ListOfCategories } from '../domain/Repository';
+import CategoryEntity from '../domain/Category';
 
 export class Creator implements CategoryCreator {
     public saveCategory = async (category: CategoryEntity): Promise<void> => {
