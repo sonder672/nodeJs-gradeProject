@@ -12,7 +12,7 @@ export class Product extends BaseEntity {
     @Column()
         available: boolean;
 
-    @Column()
+    @Column({ type: 'decimal' })
         price: number;
 
     @Column()
