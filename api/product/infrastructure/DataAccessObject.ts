@@ -1,5 +1,5 @@
 import { Product } from '../../../models/Product';
-import { ProductCreator, ProductFinder, ProductUpdater, ListOfProducts } from '../domain/Repository';
+import { ProductCreator, ProductFinder, ProductUpdater, ListOfProducts, PriceFinder } from '../domain/Repository';
 import ProductEntity from '../domain/Product';
 
 export class CreateProduct implements ProductCreator {
@@ -74,6 +74,25 @@ export class FindProduct implements ProductFinder {
     public getProduct = async(uuid: string): Promise<Product | null> => {
         try {
             return Product.findOneBy({ uuid });
+        } catch (error) {
+            throw {
+                statusCode: 500,
+                message: error.message || error
+            };
+        }
+    };
+}
+
+export class FindPrice implements PriceFinder {
+    public getPrice = async (uuid: string): Promise<number> => {
+        try {
+            const productPrice = await Product.find({
+                select: ['price'],
+                where: { uuid },
+                take: 1
+            });
+
+            return productPrice[0].price;
         } catch (error) {
             throw {
                 statusCode: 500,

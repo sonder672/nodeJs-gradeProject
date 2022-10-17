@@ -16,3 +16,7 @@ export interface ListOfProducts {
     getAllProducts()
     getAllActiveProducts()
 }
+
+export interface PriceFinder {
+    getPrice(uuid: string): Promise<number>;
+}
