@@ -6,7 +6,7 @@ export class Category extends BaseEntity {
     @PrimaryColumn()
         uuid: string;
 
-    @Column()
+    @Column({unique: true})
         name: string;
 
     @CreateDateColumn()

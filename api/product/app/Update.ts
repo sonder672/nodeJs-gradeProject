@@ -12,12 +12,14 @@ export default class Update {
     ) {}
 
     public updateProduct = async({uuid, name, price, stock, categoryUuid}: { uuid: string, name: string, price: number, stock: number, categoryUuid: string }): Promise<void> => {
-        try {
-            const finderService = new ProductFinderService(this.findUuid);
-            await finderService.existingProductUuid(uuid);
+        const finderService = new ProductFinderService(this.findUuid);
+        const categoryService = new categoryFinderService(this.categoryFinder);
 
-            const categoryService = new categoryFinderService(this.categoryFinder);
-            await categoryService.existingCategoryUuid(categoryUuid);
+        try {
+            Promise.all([
+                finderService.existingProductUuid(uuid),
+                categoryService.existingCategoryUuid(categoryUuid)
+            ]);
 
             const productEntity = new Product(
                 name, 
@@ -25,7 +27,7 @@ export default class Update {
                 stock,
                 categoryUuid
             );
-            
+            delete productEntity[uuid];
             await this.updater.updateProduct({
                 uuid, 
                 product: productEntity
