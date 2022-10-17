@@ -9,7 +9,7 @@ export default class FindCategoryUuid {
         if (!categoryExists)
             throw {
                 statusCode: 404,
-                message: 'the identifier does not correspond to any category'
+                message: 'el identificador no corresponde a ninguna categoría'
             };
     };
 }

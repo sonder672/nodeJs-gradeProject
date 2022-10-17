@@ -9,7 +9,7 @@ export default class FindProductUuid {
         if (!productExists)
             throw {
                 statusCode: 404,
-                message: 'the identifier does not correspond to any product'
+                message: 'El identificador no corresponde a ningún producto'
             };
     };
 }

@@ -8,8 +8,8 @@ export default class FindCategoryName {
 
         if (categoryNameExists)
             throw {
-                statusCode: 400,
-                message: 'The name already exists, choose another for your category'
+                statusCode: 422,
+                message: 'El nombre ya existe, elige otro para tu categoría'
             };
     };
 }
