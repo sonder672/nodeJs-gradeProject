@@ -4,10 +4,11 @@ import { Request, Response } from 'express';
 export default class Controller {
     public createProduct = async(request: Request, response: Response) => {
         const { name, price, stock, categoryUuid } = request.body;
+        const images = request.files?.image;
 
         try {
             await createProductService.saveProduct({
-                name, price, stock, categoryUuid
+                name, price, stock, categoryUuid, images
             });
 
             return response.status(201).json({message: 'Created'});

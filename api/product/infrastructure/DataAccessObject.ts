@@ -1,17 +1,35 @@
 import { Product } from '../../../models/Product';
+import { ProductImages } from '../../../models/ProductImages';
 import { ProductCreator, ProductFinder, ProductUpdater, ListOfProducts, PriceFinder } from '../domain/Repository';
 import ProductEntity from '../domain/Product';
+import { MultipleImages } from './MultipleImages';
+import dataSource from '../../../database';
 
 export class CreateProduct implements ProductCreator {
     public saveProduct = async (product: ProductEntity): Promise<void> => {
         try {
-            await Product.insert({
-                uuid: product.uuid,
-                name: product.name,
-                available: product.available,
-                price: product.price,
-                stock: product.stock,
-                category: product.categoryUuid
+            const { images, ...productToSave } = product;
+
+            await MultipleImages(images);
+
+            const productImagesToSave = images.map(image => {
+                return {
+                    imageName: image.name, 
+                    productUuid: productToSave.uuid
+                };
+            });
+            
+            await dataSource.manager.transaction(async (transactionalEntityManager) => {
+                const newProduct = transactionalEntityManager.create(
+                    Product, productToSave
+                );
+                await transactionalEntityManager.save(newProduct);
+                await transactionalEntityManager
+                    .createQueryBuilder()
+                    .insert()
+                    .into(ProductImages)
+                    .values(Object.values(productImagesToSave))
+                    .execute();
             });
         } catch (error) {
             throw {
@@ -30,7 +48,7 @@ export class UpdateProduct implements ProductUpdater {
                 available: product.available,
                 price: product.price,
                 stock: product.stock,
-                category: product.categoryUuid
+                categoryUuid: product.categoryUuid
             });
         } catch (error) {
             throw {

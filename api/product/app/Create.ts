@@ -9,7 +9,7 @@ export default class Create {
         private readonly categoryFinder: CategoryUuidFinder
     ){}
 
-    public saveProduct = async({name, price, stock, categoryUuid}: { name: string, price: number, stock: number, categoryUuid: string }): Promise<void> => {
+    public saveProduct = async({name, price, stock, categoryUuid, images}: { name: string, price: number, stock: number, categoryUuid: string, images }): Promise<void> => {
         try {
             const categoryService = new categoryFinderService(this.categoryFinder);
             await categoryService.existingCategoryUuid(categoryUuid);
@@ -18,7 +18,8 @@ export default class Create {
                 name, 
                 price, 
                 stock,
-                categoryUuid
+                categoryUuid,
+                images
             );
             
             await this.creator.saveProduct(productEntity);

@@ -25,7 +25,8 @@ export default class Update {
                 name, 
                 price, 
                 stock,
-                categoryUuid
+                categoryUuid,
+                'hola'
             );
             delete productEntity[uuid];
             await this.updater.updateProduct({
