@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryColumn, CreateDateColumn, BaseEntity, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryColumn, CreateDateColumn, BaseEntity, ManyToOne, OneToMany } from 'typeorm';
 import { Category } from './Category';
+import { ProductImages } from './ProductImages';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -22,5 +23,8 @@ export class Product extends BaseEntity {
         createdAt: Date;
 
     @ManyToOne(() => Category, category => category.products, { nullable: false })
-        category: string;
+        categoryUuid: string;
+
+    @OneToMany(() => ProductImages, productImages => productImages.productUuid)
+        images: ProductImages[];
 }
