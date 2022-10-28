@@ -1,4 +1,6 @@
-import { CreateProduct, UpdateProduct, FindProduct, AllProducts } from './DataAccessObject';
+import { CreateProduct } from './DataAccessObject/CreateProduct';
+import { AllProducts } from './DataAccessObject/AllProducts';
+import { UpdateProduct, FindProduct } from './DataAccessObjec';
 import { FindCategory } from '../../category/infrastructure/DataAccessObject';
 import Create from '../app/Create';
 import Update from '../app/Update';

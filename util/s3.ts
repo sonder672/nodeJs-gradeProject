@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import config from 'config';
 
@@ -23,6 +23,19 @@ export const uploadToBucket = (tempFilePath: string, imageName: string) => {
         Body: stream
     };
     const command = new PutObjectCommand(uploadParams);
+
+    return storage.send(command);
+};
+
+export const getFile = (fileName: string) => {
+    if (typeof fileName === 'undefined')
+        return;
+        
+    const bucketName: string = config.get('aws.bucketName');
+    const command = new GetObjectCommand({
+        Bucket: bucketName,
+        Key: fileName
+    });
 
     return storage.send(command);
 };
