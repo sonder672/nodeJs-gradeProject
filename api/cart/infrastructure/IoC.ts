@@ -1,5 +1,5 @@
 import Create from '../app/Create';
-import { FindProduct, FindPrice } from '../../product/infrastructure/DataAccessObject';
+import { FindProduct, FindPrice } from '../../product/infrastructure/DataAccessObjec';
 import Controller from './Controller';
 
 export const create = new Create(
