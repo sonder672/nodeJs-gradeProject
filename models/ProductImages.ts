@@ -10,5 +10,5 @@ export class ProductImages extends BaseEntity {
         imageName: string;
 
     @ManyToOne(() => Product, product => product.images, { nullable: false })
-        productUuid: string;
+        product: string;
 }

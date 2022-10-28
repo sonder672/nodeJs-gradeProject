@@ -23,8 +23,8 @@ export class Product extends BaseEntity {
         createdAt: Date;
 
     @ManyToOne(() => Category, category => category.products, { nullable: false })
-        categoryUuid: string;
+        category: string;
 
-    @OneToMany(() => ProductImages, productImages => productImages.productUuid)
+    @OneToMany(() => ProductImages, productImages => productImages.product, { eager: true })
         images: ProductImages[];
 }
