@@ -1,0 +1,23 @@
+{
+    "db": {
+        "host": "database-1.cekumvn9bj3n.us-east-1.rds.amazonaws.com",
+        "name": "sodner",
+        "username": "sodner_santiago",
+        "password": "passw0rdSantiago",
+        "port": 5433
+    },
+    "server": {
+        "port": 1234,
+        "jwt": "jsonwebtoken1000!04santiago"
+    },
+    "aws": {
+        "region": "us-east-1",
+        "accessKey": "AKIA2UHH6NRTPYXBWX7N",
+        "secretKey": "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",
+        "bucketName": "s3-bucket-gradeproject",
+        "bucketProductUrl": "https://s3-bucket-gradeproject.s3.amazonaws.com/"
+    },
+    "adm": {
+        "phone": 573223110535
+    }
+}
