@@ -8,7 +8,8 @@ export class Cart {
     constructor(
         readonly quantity: number,
         readonly productUuid: string,
-        readonly price: number
+        readonly price: number,
+        readonly image: string
     )
     {
         this.uuid = generateUuid();

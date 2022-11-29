@@ -18,7 +18,8 @@ export default class Create {
             const cart = new Cart(
                 quantity,
                 productUuid,
-                productPrice
+                productPrice,
+                'hola'
             );
 
             return cart;

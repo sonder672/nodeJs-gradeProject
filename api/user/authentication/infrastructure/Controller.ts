@@ -8,10 +8,11 @@ export default class Controller {
         const { email, password } = request.body;
         try {
             const validatedUser = await logIn.signup({ email, password });
+
             const token = jsonWebToken.sign(validatedUser, config.get('server.jwt'));
 
             return response.status(200).json(
-                {message: 'Welcome back', token}
+                {message: 'Welcome back', token, uuid: validatedUser.uuid}
             );
         } catch (error) {
             return response.status(error.statusCode).json(
@@ -38,5 +39,11 @@ export default class Controller {
                 { message: error.message }
             );             
         }
+    };
+
+    public validateViewAccess = (_request: Request, response: Response) => {
+        return response.status(200).json(
+            {message: '¡Bienvenido de vuelta, administrador!'}
+        );
     };
 }

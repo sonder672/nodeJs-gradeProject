@@ -2,13 +2,14 @@ import { createCategoryService, updateCategoryService, categoriesService } from 
 import { Request, Response } from 'express';
 
 export default class Controller {
-    public saveUser = async(request: Request, response: Response) => {
+    public saveCategory = async(request: Request, response: Response) => {
         const { name } = request.body;
+        const image = request.files?.image;
 
         try {
-            await createCategoryService.saveCategory(name);
+            const category = await createCategoryService.saveCategory(name, image);
 
-            return response.status(201).json({message: 'Created'});
+            return response.status(201).json({message: 'Created', category});
         } catch(error) {
             return response.status(error.statusCode).json(
                 {message: error.message}
@@ -35,8 +36,20 @@ export default class Controller {
         try {
             const categories = await categoriesService.getAllCategories();
 
-            return response.status(200).json({ categories });
+            return response.status(200).json(categories);
         } catch(error) {
+            return response.status(error.statusCode).json(
+                {message: error.message}
+            );
+        }
+    };
+
+    public getCategoriesToMatch = async(_request: Request, response: Response) => {
+        try {
+            const categories = await categoriesService.getCategories();
+
+            return response.status(200).json(categories);
+        } catch (error) {
             return response.status(error.statusCode).json(
                 {message: error.message}
             );

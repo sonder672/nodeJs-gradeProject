@@ -12,6 +12,9 @@ export class Category extends BaseEntity {
     @CreateDateColumn()
         createdAt: Date;
 
+    @Column()
+        imageName: string;
+
     @OneToMany(() => Product, product => product.category)
         products: Product[];
 }

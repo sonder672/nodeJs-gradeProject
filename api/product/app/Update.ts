@@ -11,10 +11,10 @@ export default class Update {
         private readonly categoryFinder: CategoryUuidFinder
     ) {}
 
-    public updateProduct = async({uuid, name, price, stock, categoryUuid}: { uuid: string, name: string, price: number, stock: number, categoryUuid: string }): Promise<void> => {
+    public updateProduct = async({uuid, name, price, stock, categoryUuid, colorAndImage}: { uuid: string, name: string, price: number, stock: number, categoryUuid: string, colorAndImage }): Promise<void> => {
         const finderService = new ProductFinderService(this.findUuid);
         const categoryService = new categoryFinderService(this.categoryFinder);
-
+        console.log(colorAndImage);
         try {
             Promise.all([
                 finderService.existingProductUuid(uuid),
@@ -26,7 +26,7 @@ export default class Update {
                 price, 
                 stock,
                 categoryUuid,
-                'hola'
+                'colors',
             );
             delete productEntity[uuid];
             await this.updater.updateProduct({

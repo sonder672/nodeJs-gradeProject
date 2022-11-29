@@ -1,10 +1,12 @@
 import express from 'express';
+import { checkAuth } from '../../../middleware/auth';
 import { categoryController } from './IoC';
 
 const router = express.Router();
 
 router.get('/', categoryController.getAllCategories);
-router.post('/', categoryController.saveUser);
-router.put('/:uuid', categoryController.updateUser);
+router.get('/match', categoryController.getCategoriesToMatch);
+router.post('/', checkAuth, categoryController.saveCategory);
+router.put('/:uuid', checkAuth, categoryController.updateUser);
 
-export default router; 
+export default router;

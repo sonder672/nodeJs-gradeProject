@@ -1,11 +1,19 @@
 import { Category } from '../../../models/Category';
 import { CategoryCreator, CategoryUuidFinder, CategoryNameFinder, CategoryUpdater, ListOfCategories } from '../domain/Repository';
 import CategoryEntity from '../domain/Category';
+import { saveOneImage } from '../../product/infrastructure/MultipleImages';
+import config from 'config';
 
 export class Creator implements CategoryCreator {
     public saveCategory = async (category: CategoryEntity): Promise<void> => {
         try {
-            await Category.insert(category);
+            await saveOneImage(category.image);
+
+            await Category.insert({
+                uuid: category.uuid,
+                name: category.name,
+                imageName: category.image.name
+            });
         } catch (error) {
             throw {
                 statusCode: 500,
@@ -45,7 +53,24 @@ export class CategoryName implements CategoryNameFinder {
 export class AllCategories implements ListOfCategories {
     public getAllCategories = async (): Promise<Category[]> => {
         try {
-            return Category.find();
+            const categories = await Category.find();
+            return getImagesWithURLByCategory(categories);
+        } catch (error) {
+            throw {
+                statusCode: 500,
+                message: error.message || error
+            };
+        }
+    };
+
+    public getCategoriesToMatch = async(): Promise<Category[]> => {
+        try {
+            return Category.find({
+                select: {
+                    uuid: true,
+                    name: true
+                }
+            });
         } catch (error) {
             throw {
                 statusCode: 500,
@@ -67,3 +92,18 @@ export class FindCategory implements CategoryUuidFinder {
         }
     };
 }
+
+const getImagesWithURLByCategory = (CategoriesAndTheirImages) => {
+    const productUrl: string = config.get('aws.bucketProductUrl');
+
+    const finalCategory = CategoriesAndTheirImages.map(category => {
+        const { imageName, ...productWithoutImages } = category;
+
+        return {
+            images: `${productUrl}${imageName}`, 
+            ...productWithoutImages
+        };
+    });
+
+    return finalCategory;
+};

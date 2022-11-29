@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryColumn, CreateDateColumn, BaseEntity } from 'typeorm';
+import { Entity, Column, PrimaryColumn, CreateDateColumn, BaseEntity, ManyToOne, OneToMany } from 'typeorm';
+import { Role } from './Role';
+import { CustomGarments } from './CustomGarments';
 
 @Entity()
 export class User extends BaseEntity {
@@ -19,4 +21,10 @@ export class User extends BaseEntity {
 
     @CreateDateColumn()
         createdAt: Date;
+
+    @ManyToOne(() => Role, role => role.user, { nullable: false, eager: true })
+        role: number;
+
+    @OneToMany(() => CustomGarments, customGarments => customGarments.user)
+        customizations: CustomGarments[];
 }

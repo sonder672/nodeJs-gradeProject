@@ -11,8 +11,8 @@ export default class Product {
         readonly name: string,
         readonly price: number,
         readonly stock: number,
-        readonly categoryUuid: string,
-        readonly images
+        readonly category: string,
+        readonly colorAndImage,
     ) 
     {
         this.uuid = generateUuid();

@@ -1,5 +1,5 @@
 import { Product } from '../../../models/Product';
-import { ProductFinder, ProductUpdater, PriceFinder } from '../domain/Repository';
+import { ProductFinder, ProductUpdater, PriceFinder, NameFinder } from '../domain/Repository';
 import ProductEntity from '../domain/Product';
 
 export class UpdateProduct implements ProductUpdater {
@@ -10,7 +10,7 @@ export class UpdateProduct implements ProductUpdater {
                 available: product.available,
                 price: product.price,
                 stock: product.stock,
-                category: product.categoryUuid
+                category: product.category,
             });
         } catch (error) {
             throw {
@@ -40,11 +40,28 @@ export class FindPrice implements PriceFinder {
         try {
             const productPrice = await Product.find({
                 select: ['price'],
-                where: { uuid },
-                take: 1
+                where: { uuid }
             });
 
             return productPrice[0].price;
+        } catch (error) {
+            throw {
+                statusCode: 500,
+                message: error.message || error
+            };
+        }
+    };
+}
+
+export class FindName implements NameFinder {
+    public getName = async (uuid: string): Promise<string> => {
+        try {
+            const productPrice = await Product.find({
+                select: ['name'],
+                where: { uuid }
+            });
+
+            return productPrice[0].name;
         } catch (error) {
             throw {
                 statusCode: 500,

@@ -9,17 +9,17 @@ export default class Create {
         private readonly categoryFinder: CategoryUuidFinder
     ){}
 
-    public saveProduct = async({name, price, stock, categoryUuid, images}: { name: string, price: number, stock: number, categoryUuid: string, images }): Promise<void> => {
+    public saveProduct = async({name, price, stock, category, colorAndImage}: { name: string, price: number, stock: number, category: string, colorAndImage }): Promise<void> => {
         try {
             const categoryService = new categoryFinderService(this.categoryFinder);
-            await categoryService.existingCategoryUuid(categoryUuid);
+            await categoryService.existingCategoryUuid(category);
 
             const productEntity = new Product(
                 name, 
                 price, 
                 stock,
-                categoryUuid,
-                images
+                category,
+                colorAndImage
             );
             
             await this.creator.saveProduct(productEntity);

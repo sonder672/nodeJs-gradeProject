@@ -18,4 +18,5 @@ export interface CategoryCreator {
 
 export interface ListOfCategories {
     getAllCategories()
+    getCategoriesToMatch()
 }

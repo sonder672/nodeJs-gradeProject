@@ -12,4 +12,9 @@ export default class Categories {
             };
         }
     };
+
+    public getCategories = async() => {
+        const categories = await this.lister.getCategoriesToMatch();
+        return categories;
+    };
 }

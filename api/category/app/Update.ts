@@ -20,7 +20,7 @@ export default class Update {
                 categoryName.existingCategoryName(name)
             ]);  
 
-            const categoryEntity = new Category(name);
+            const categoryEntity = new Category(name, 'image');
             delete categoryEntity[uuid];
             this.updater.updateCategory({
                 uuid, 

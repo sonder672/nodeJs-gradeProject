@@ -15,8 +15,13 @@ export interface ProductCreator {
 export interface ListOfProducts {
     getAllProducts()
     getAllActiveProducts()
+    getProductsByCategory(categoryUuid: string)
 }
 
 export interface PriceFinder {
     getPrice(uuid: string): Promise<number>;
+}
+
+export interface NameFinder {
+    getName(uuid: string): Promise<string>;
 }

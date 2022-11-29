@@ -3,12 +3,11 @@ import { Request, Response } from 'express';
 
 export default class Controller {
     public createProduct = async(request: Request, response: Response) => {
-        const { name, price, stock, categoryUuid } = request.body;
-        const images = request.files?.image;
+        const { name, price, stock, category, colorAndImage } = request.body;
 
         try {
             await createProductService.saveProduct({
-                name, price, stock, categoryUuid, images
+                name, price, stock, category, colorAndImage
             });
 
             return response.status(201).json({message: 'Created'});
@@ -21,11 +20,11 @@ export default class Controller {
    
     public updateProduct = async(request: Request, response: Response) => {
         const { uuid } = request.params;
-        const { name, price, stock, categoryUuid } = request.body;
+        const { name, price, stock, categoryUuid, colorAndImage } = request.body;
 
         try {
             await updateProductService.updateProduct(
-                {uuid, name, price, stock, categoryUuid}
+                {uuid, name, price, stock, categoryUuid, colorAndImage}
             );
 
             return response.status(200).json({message: 'Updated'});
@@ -40,7 +39,21 @@ export default class Controller {
         try {
             const products = await productsService.getAllProducts();
 
-            return response.status(200).json({ products });
+            return response.status(200).json(products);
+        } catch(error) {
+            return response.status(error.statusCode).json(
+                {message: error.message}
+            );
+        }
+    };
+
+    public getProductsByCategory = async(request: Request, response: Response) => {
+        try {
+            const { categoryUuid } = request.params;
+            const products = 
+                await productsService.getAllProductsByCategory(categoryUuid);
+
+            return response.status(200).json(products);
         } catch(error) {
             return response.status(error.statusCode).json(
                 {message: error.message}
@@ -49,6 +62,18 @@ export default class Controller {
     };
 
     public getAllActiveProducts = async(_request: Request, response: Response) => {
+        try {
+            const products = await productsService.getAllActiveProducts();
+
+            return response.status(200).json({ products });
+        } catch(error) {
+            return response.status(error.statusCode).json(
+                {message: error.message}
+            );
+        }
+    };
+
+    public getCustomizableGarment = async(_request: Request, response: Response) => {
         try {
             const products = await productsService.getAllActiveProducts();
 

@@ -1,14 +1,14 @@
 import { ListOfProducts } from '../../domain/Repository';
 import { Product } from '../../../../models/Product';
-import { getMultipleImages } from '../MultipleImages';
+import config from 'config';
+import dataSource from '../../../../database';
+import { Category } from '../../../../models/Category';
 
 export class AllProducts implements ListOfProducts {
     public getAllProducts = async () => {
         try {
             const products = await Product.find(); 
-            const getProductWithImages = await Promise.all(
-                await this.getImagesByProductUuid(products)
-            );
+            const getProductWithImages = this.getImagesByProductCategory(products);
 
             return getProductWithImages;
         } catch (error) {
@@ -19,25 +19,53 @@ export class AllProducts implements ListOfProducts {
         }
     };
 
-    private getImagesByProductUuid = async (products: Product[]) => {
-        const images = products.map(async product => {
-            const { images, ...otherElementsProduct } = product;
-            const nameImages = images.map(image => {
-                return image.imageName;
-            });
+    public getProductsByCategory = async(categoryUuid: string) => {
+        try {
+            const products = await dataSource
+                .createQueryBuilder()
+                .select(['category.uuid', 'product', 'images.imageName', 'color.colorName', 'color.hexadecimalCode'])
+                .from(Category, 'category')
+                .innerJoin('category.products', 'product')
+                .innerJoin('product.images', 'images')
+                .innerJoin('images.color', 'color')
+                .where('category.uuid = :uuid', {uuid: categoryUuid})
+                .getMany();
 
-            const getImagesFromS3 = await getMultipleImages(nameImages);
-            const files = getImagesFromS3.map(file => {
-                return file?.ETag;
-            });
+            const getProductWithImages = 
+                this.getImagesByProductCategory(products[0].products);
+    
+            return getProductWithImages;
+        } catch (error) {
+            throw {
+                statusCode: 500,
+                message: error.message || error
+            };
+        }
+    };
 
+    private getImagesByProductCategory = (productsAndTheirImages) => {
+        const productUrl: string = config.get('aws.bucketProductUrl');
+
+        const finalProduct = productsAndTheirImages.map(product => {
+            const { images, ...productWithoutImages } = product;
+
+            const imagesWithUrlAndColor = Object.values(images).map((file: any) => {
+                return {
+                    image: `${productUrl}${file.imageName}`,
+                    color: {
+                        hexadecimalCode: file.color.hexadecimalCode,
+                        colorName: file.color.colorName
+                    }
+                }; 
+            });
+                
             return {
-                product: otherElementsProduct,
-                files
+                images: imagesWithUrlAndColor, 
+                ...productWithoutImages
             };
         });
 
-        return images;
+        return finalProduct;
     };
 
     public getAllActiveProducts = async (): Promise<Product[]> => {

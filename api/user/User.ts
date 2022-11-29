@@ -4,10 +4,11 @@ import { generateUuid } from '../../util/uuidv4';
 
 export default class User {
     readonly uuid: string;
+    readonly role = 1;
 
     constructor(
         readonly email: string, 
-        readonly password: string,
+        public password: string,
         readonly name: string,
         readonly lastName: string)
     {

@@ -26,4 +26,8 @@ export default class Products {
             };
         }
     };
+
+    public getAllProductsByCategory = async(categoryUuid: string) => {
+        return await this.lister.getProductsByCategory(categoryUuid);
+    };
 }

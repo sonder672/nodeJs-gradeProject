@@ -1,4 +1,5 @@
 import Repository from '../Domain/Repository';
+import UserEntity from '../../User';
 import { User } from '../../../../models/User';
 
 export default class DataAccessObject implements Repository {
@@ -26,9 +27,9 @@ export default class DataAccessObject implements Repository {
         return true;
     };
 
-    public userCreator = async (user: { uuid:string, email: string, password: string, name: string, lastName: string }): Promise<void> => {
+    public userCreator = async (userEntity: UserEntity): Promise<void> => {
         try {
-            await User.insert(user);
+            await User.insert(userEntity);
         } catch (error) {
             throw {
                 statusCode: 500,

@@ -5,7 +5,7 @@ export const Email = (email: string) => {
     if(!regulateExpression.test(email)) 
         throw {
             statusCode: 400,
-            message: 'Wrong email. Add a valid one'
+            message: 'Correo electrónico erróneo, agregue uno válido'
         };
     
     return email;

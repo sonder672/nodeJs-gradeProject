@@ -1,5 +1,6 @@
 import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, BaseEntity } from 'typeorm';
 import { Product } from './Product';
+import { ProductColor } from './ProductColor';
 
 @Entity()
 export class ProductImages extends BaseEntity {
@@ -11,4 +12,7 @@ export class ProductImages extends BaseEntity {
 
     @ManyToOne(() => Product, product => product.images, { nullable: false })
         product: string;
+
+    @ManyToOne(() => ProductColor, color => color.image, { nullable: true, eager: true })
+        color: number;
 }

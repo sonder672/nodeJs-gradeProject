@@ -13,7 +13,7 @@ export default class Login {
             if (existingUser.length === 0) 
                 throw {
                     statusCode: 404,
-                    message: 'Wrong email'
+                    message: 'Correo electrónico o contraseña inválido'
                 };
             
             const passwordComparer = await this.decrypt.PasswordComparer(
@@ -23,10 +23,10 @@ export default class Login {
             if (!passwordComparer)
                 throw {
                     statusCode: 404,
-                    message: 'Wrong password'
+                    message: 'Correo electrónico o contraseña inválido'
                 };
 
-            return existingUser[0].uuid;
+            return { uuid: existingUser[0].uuid };
         } catch(error) {
             throw {
                 statusCode: error.statusCode || 500,

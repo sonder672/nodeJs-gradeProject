@@ -1,4 +1,4 @@
-import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import config from 'config';
 
@@ -27,6 +27,25 @@ export const uploadToBucket = (tempFilePath: string, imageName: string) => {
     return storage.send(command);
 };
 
+export const uploadToBucketBase64 = (base64: string, imageName: string) => {
+    const imageInBase64 = Buffer.from(
+        base64.replace(/^data:image\/\w+;base64,/, ''), 'base64'
+    );
+    const type = base64.split(';')[0].split('/')[1];
+    
+    const bucketName: string = config.get('aws.bucketName');
+    const uploadParams = {
+        Bucket: bucketName,
+        Key: imageName,
+        Body: imageInBase64,
+        ContentEncoding: 'base64',
+        ContentType: `image/${type}`
+    };
+    const command = new PutObjectCommand(uploadParams);
+
+    return storage.send(command);
+};
+/* 
 export const getFile = (fileName: string) => {
     if (typeof fileName === 'undefined')
         return;
@@ -38,4 +57,4 @@ export const getFile = (fileName: string) => {
     });
 
     return storage.send(command);
-};
+}; */
